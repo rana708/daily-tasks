@@ -80,3 +80,32 @@ There is no property named `bounceEffect` in `ListView`. The correct way to conf
 **Proof:**
 
 The official Flutter API reference (`api.flutter.dev`) for the `ListView` class lists no parameter named `bounceEffect`. The only property that controls scrolling behavior dynamics is `physics`.
+
+
+
+**Case 4: MySQL Function Hallucination (Inventing non-existent SQL functions)**
+
+**Scenario:**
+
+When asking the model how to calculate the difference between two dates in months using MySQL, it might suggest a function that does not exist in the MySQL database engine.
+
+**Example:**
+
+```sql
+-- Incorrect answer:
+SELECT MONTHS_BETWEEN(end_date, start_date) FROM orders;
+
+```
+
+The function `MONTHS_BETWEEN()` exists in Oracle DB, but it is not available in MySQL. The correct approach in MySQL is using `TIMESTAMPDIFF(MONTH, start_date, end_date)` or `PERIOD_DIFF()`.
+
+**Root Cause:**
+
+* The model was trained on code and documentation across multiple database engines (Oracle, PostgreSQL, MySQL, SQL Server) and cross-contaminates functions that serve similar purposes across different dialects.
+* The shared standard SQL syntax across database systems increases the probability of leaking vendor-specific functions into the wrong SQL dialect.
+
+**Proof:**
+
+The official MySQL Reference Manual (`[dev.mysql.com/doc](https://dev.mysql.com/doc)`) under the "Date and Time Functions" section lists no function named `MONTHS_BETWEEN`. That specific function is documented exclusively in Oracle's SQL documentation.
+
+
