@@ -50,3 +50,33 @@ There is no module named `next/session` and no Hook named `useServerSession` in 
 **Proof:**
 
 Reviewing the official documentation at `nextjs.org/docs` reveals no reference to `next/session` or `useServerSession`—they are entirely fabricated module identifiers.
+
+
+
+**Case 3: Flutter Widget/Property Hallucination (Inventing non-existent properties or widgets)**
+
+**Scenario:**
+
+When asking the model how to add a bouncing scroll effect inside a `ListView`, it might suggest a property that does not exist in the widget's API.
+
+**Example:**
+
+```dart
+// Incorrect answer:
+ListView(
+  bounceEffect: true, // Non-existent property in Flutter
+  children: [...],
+)
+
+```
+
+There is no property named `bounceEffect` in `ListView`. The correct way to configure this behavior is by setting `physics: BouncingScrollPhysics()`.
+
+**Root Cause:**
+
+* The model infers parameter names based on the literal semantic description of the requested feature ("bounce effect") rather than referencing Flutter's actual API signatures.
+* The large volume of similar configuration properties across various Flutter widgets (e.g., `physics`, `scrollDirection`, `shrinkWrap`) increases the chance of generating an intuitively named but completely fake property.
+
+**Proof:**
+
+The official Flutter API reference (`api.flutter.dev`) for the `ListView` class lists no parameter named `bounceEffect`. The only property that controls scrolling behavior dynamics is `physics`.
