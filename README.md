@@ -109,3 +109,23 @@ The function `MONTHS_BETWEEN()` exists in Oracle DB, but it is not available in 
 The official MySQL Reference Manual (`[dev.mysql.com/doc](https://dev.mysql.com/doc)`) under the "Date and Time Functions" section lists no function named `MONTHS_BETWEEN`. That specific function is documented exclusively in Oracle's SQL documentation.
 
 
+**Case 5: cPanel Path or Setting Hallucination (Inventing non-existent control panel paths or tool names)**
+
+**Scenario:**
+
+When asking the model how to change the PHP version for a specific website in cPanel, it might give an inaccurate tool name or dashboard navigation path.
+
+**Example:**
+
+> "Go to **Settings > Server Configuration > PHP Engine Selector** and select your desired PHP version."
+
+There is no tool named "PHP Engine Selector" in cPanel. The correct name of the tool is **"MultiPHP Manager"** (or **"Select PHP Version"** when using CloudLinux/CloudLinux PHP Selector), and it is located under the **Software** section, not "Server Configuration."
+
+**Root Cause:**
+
+* cPanel interface labels can vary slightly across software versions and web hosting providers (many hosts apply custom themes or plugins), causing the model to construct a "plausible-sounding" path rather than using exact official terminology.
+* Lack of real-time interface rendering leads the model to synthesize descriptive UI labels instead of verifying the current control panel layout.
+
+**Proof:**
+
+The official cPanel documentation (`docs.cpanel.net`) explicitly identifies the management tools as **"MultiPHP Manager"** and **"MultiPHP INI Editor"** inside the **Software** section. There is no record of a tool named "PHP Engine Selector" in any official cPanel release.
