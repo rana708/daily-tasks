@@ -26,8 +26,9 @@ The model may have relied on a large body of training data covering Laravel vers
 
 
 
-Case2: Arithmetic Calculation Error
-Category: Incorrect mathematical calculation / incorrect application of arithmetic operations.
+Case 2: Reasoning-Trace Inconsistency in an Arithmetic Calculation
+
+Category: Internally inconsistent reasoning steps (the shown work does not match itself), distinct from a wrong final answer.
 
 Prompt Used:
 
@@ -37,33 +38,25 @@ Actual Model Response:
 
 "32 + 10 − 10 + 100 − 1 = 121."
 
-Specific Error:
+Specific Error: Independent verification (two separate methods below) confirms the correct final answer is actually 121, which matches what the model stated. However, the model's shown intermediate step is wrong on its own terms: it wrote 32 + 10 − 10 + 100 − 1, but the original expression has − 20, not − 10 (from 5×2 = 10, then a separate − 20 term). The line the model displayed doesn't even sum to 121 (it sums to 131). So while the final numeric answer happens to be correct, the displayed reasoning trace is internally inconsistent with both the original expression and with its own stated result.
 
-The model made an error in the final subtraction. After correctly applying the order of operations:
+Evidence (two independent verification methods):
 
-5 × 2 = 10
-20 × 5 = 100
-32 + 10 − 10 + 100 − 1 = 131
+Method A — strict left-to-right order of operations:
 
-Therefore, the correct answer is 131, not 121.
+5 × 2 = 10, 20 × 5 = 100
+32 + 10 − 20 + 100 − 1
+32 + 10 = 42 → 42 − 20 = 22 → 22 + 100 = 122 → 122 − 1 = 121
 
-Evidence:
+Method B — sum all positive terms and all negative terms separately, then combine:
 
-After reaching:
+Positive terms: 32 + 10 + 100 = 142
+Negative terms: 20 + 1 = 21
+142 − 21 = 121
 
-32 + 10 − 10 + 100 − 1 = 132 − 1
+Both independently-derived methods agree on 121, confirming the model's final answer is correct even though its displayed working (− 10 instead of − 20) is not.
 
-The correct calculation is:
-
-132 − 1 = 131
-
-not 121.
-
-Likely Cause:
-
-This type of error may occur when a language model generates arithmetic steps sequentially without reliably executing or verifying the underlying calculation. As a result, the reasoning may appear consistent while the final numerical result is incorrect, which is an example of Arithmetic Hallucination.
-
-Case 3: Hallucinated Function
+Likely Cause: This type of error can occur when a model generates arithmetic steps as plausible text rather than reliably executing or double-checking each intermediate value, so a term can be silently altered (5×2's product substituted for the separate −20 term) without the model noticing the resulting line is inconsistent with the original expression — even when the final answer it commits to is, in this case, still correct.Case 3: Hallucinated Function
 
 Category: Invented API — model describes a method that does not exist.
 
