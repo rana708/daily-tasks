@@ -1,4 +1,4 @@
-# day01.md
+#
 
 Case 1: Version Confusion — Using an Outdated or Deprecated Feature
 
